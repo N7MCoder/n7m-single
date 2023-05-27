@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.github.n7m.single.core.dao.N7mActionLogDao">
+
+    <select id="queryPage" resultType="io.github.n7m.single.core.model.vo.N7mActionLogVo">
+        SELECT
+            a.*,
+            u.`name`
+        FROM
+            n7m_action_log a
+                LEFT JOIN `system_user` u ON a.user_id = u.id
+        <where>
+            <if test="name != null and name != ''">
+                u.`name` LIKE CONCAT('%',#{name},'%')
+            </if>
+        </where>
+        ORDER BY
+            create_time DESC
+    </select>
+
+    <select id="selectPageByUser" resultType="io.github.n7m.single.core.model.vo.N7mActionLogVo">
+        SELECT
+            a.*,
+            u.`name`
+        FROM
+            n7m_action_log a
+        LEFT JOIN `system_user` u ON a.user_id = u.id
+        WHERE
+            u.id = #{userId}
+        ORDER BY
+        create_time DESC
+    </select>
+
+</mapper>
